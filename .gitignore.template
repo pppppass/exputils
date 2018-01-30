@@ -1,0 +1,10 @@
+# Temporary files
+*~
+*.tmp
+*.bak
+__pycache__
+
+# IPython Notebooks
+*.ipynb
+
+
