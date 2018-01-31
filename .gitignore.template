@@ -1,10 +1,14 @@
+# .gitignore itself
+.gitignore
+
 # Temporary files
 *~
 *.tmp
 *.bak
-__pycache__
+*.swp
+*.ipynb_checkpoints/
+__pycache__/
 
 # IPython Notebooks
 *.ipynb
-
 
