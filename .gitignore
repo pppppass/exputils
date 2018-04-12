@@ -1,0 +1,5 @@
+# Temporary files
+__pycache__/
+*~
+Temporary/
+*.ipynb_checkpoints/
