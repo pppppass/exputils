@@ -1,5 +1,11 @@
 # Temporary files
-__pycache__/
 *~
-Temporary/
+*.tmp
+*.bak
+*.swp
 *.ipynb_checkpoints/
+__pycache__/
+Temporary/
+
+# Raw files
+Raw/

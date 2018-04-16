@@ -1,30 +1,39 @@
-# font.py
-"""Font setting, related to Matplotlib."""
+"""Set configurations about fonts in Matplotlib. The module must be import
+before Pyplot."""
 import matplotlib
 
 
-def font_set(backend="default", family="serif", tex=False):
-    """Set the font configuration."""
-    if backend != "default":
+def font_set(backend=None, family="sans-serif", tex=False):
+    """General function to set fonts."""
+
+    if backend is not None:
         matplotlib.use(backend)
+
     params = {
         "font.family": family,
         "text.usetex": tex
     }
+
     matplotlib.rcParams.update(params)
 
 
+def font_use_tex():
+    """Use default backend with TeX enabled for flexible switch between .pgf
+    files or inline display."""
+    font_set(family="serif", tex=True)
+
+
+def font_use_default():
+    """Use default configuration for simple inline display."""
+    font_set()
+
+
 def font_use_pgf():
-    """Use pgf backend, in order to invoke TeX and `pgf` package for further
-    typesetting."""
-    font_set(backend="pgf", tex=True)
+    """Use pgf backend for high quality .pgf files adapted for TeX typesetting.
+    Note that this configuation cannot handle inline displays."""
+    font_set(backend="pgf", family="serif", tex=True)
 
 
-def font_use_inline():
-    """Use default configuration for inlne plots in Jupyter Notebook, that is,
-    default backend and sans-serif font."""
-    font_set(family="sans-serif")
-
-def font_use_headless():
-    """Use Agg backend, for headless terminal without an adequate GUI."""
-    font_set(backend="Agg", family="sans-serif")
+def font_use_agg():
+    """Use Agg backend for headless terminals without adequate GUI."""
+    font_set(backend="Agg")

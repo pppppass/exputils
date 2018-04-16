@@ -1,10 +1,10 @@
+"""Local utilities."""
 import datetime
 
-def NameGenerator(fmt=""):
-    ctr = 0
-    while True:
-        now = datetime.datetime.now()
-        time_str = now.strftime("%Y%m%d-%H%M%S")
-        st = fmt.format(ctr=ctr, time=time_str)
-        yield st
-        ctr += 1
+def NameFunction(fmt, ctr):
+    """Function to generate a series of filenames."""
+    now = datetime.datetime.now()
+    second = now.strftime("%Y%m%d")
+    milli = now.strftime("%H%M%S")
+    st = fmt.format(ctr=ctr, second=second, milli=milli)
+    return st
