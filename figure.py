@@ -25,15 +25,15 @@ class FigureHandler(object):
         self.ctr = 0
         self.name = utils.NameFunction
 
-    def new_figure(self):
+    def new_fig(self):
         """Allocate a new figure."""
         self.fig = pyplot.figure(figsize=self.size)
 
-    def new_axes(self):
+    def new_ax(self):
         """Add a single subplot."""
         self.ax = self.fig.add_subplot(1, 1, 1)
 
-    def export(self):
+    def save_fig(self):
         """Save the figure to file according to settings."""
         filename = self.name(self.fmt, self.ctr)
         pyplot.savefig(filename)
@@ -41,14 +41,14 @@ class FigureHandler(object):
             self.log("Figure {} saved".format(filename))
         self.ctr += 1
 
-    def finish(self):
-        """Finish a figure by either saving or displaying."""
+    def disp_fig(self):
+        """Display a figure by either saving or showing."""
         if self.save:
-            self.export()
+            self.save_fig()
         if self.echo:
             pyplot.show()
 
-    def close(self):
+    def close_fig(self):
         """Close the figure."""
         pyplot.close(self.fig)
 
@@ -60,7 +60,7 @@ class FigureHandler(object):
         self.finish()
         self.close()
     
-    def box(self, left=1.0, right=0.0, bottom=1.0, up=0.0, grid=None, aspect=None):
+    def set_box(self, left=1.0, right=0.0, bottom=1.0, up=0.0, grid=None, aspect=None):
         """Configure the view port."""
         
         if left < right:
