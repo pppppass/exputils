@@ -12,7 +12,7 @@ class FigureHandler(object):
         fig=None, ax=None,
         save=False, echo=True,
         size=(6., 4.),
-        fmt="Figure-{second}-{ctr:03}.png",
+        fmt="Figures/Figure-{date}{second}-{ctr:03}.png",
         log=print,
     ):
         """Initialize a figure handler."""
@@ -54,11 +54,11 @@ class FigureHandler(object):
 
     def fast(self, func, *args, **kwargs):
         """Fast wrapper to invoke a plotting routine."""
-        self.new_figure()
-        self.new_axes()
-        func(self, *args, **kwargs)
-        self.finish()
-        self.close()
+        self.new_fig()
+        self.new_ax()
+        func(*args, **kwargs, fh=self)
+        self.disp_fig()
+        self.close_fig()
     
     def set_box(self, left=1.0, right=0.0, bottom=1.0, up=0.0, grid=None, aspect=None):
         """Configure the view port."""
