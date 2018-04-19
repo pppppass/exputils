@@ -4,6 +4,8 @@ import mpl_toolkits.mplot3d
 
 from . import utils
 
+utils.ensure_dir(utils.figure_dir)
+
 class FigureHandler(object):
     """Class to handle figures."""
     
@@ -12,7 +14,7 @@ class FigureHandler(object):
         fig=None, ax=None,
         save=False, echo=True,
         size=(6., 4.),
-        fmt="Figures/Figure-{date}{second}-{ctr:03}.png",
+        fmt="{dire}{debug}Figure-{date}{second}-{ctr:03}.png",
         log=print,
     ):
         """Initialize a figure handler."""
@@ -23,19 +25,25 @@ class FigureHandler(object):
         self.log = log
         
         self.ctr = 0
-        self.name = utils.NameFunction
+        self.name = utils.name_function
 
-    def new_fig(self):
+    def new_fig(self, size=None):
         """Allocate a new figure."""
-        self.fig = pyplot.figure(figsize=self.size)
+        if size is not None:
+            self.fig = pyplot.figure(figsize=size)
+        else:
+            self.fig = pyplot.figure(figsize=self.size)
 
-    def new_ax(self):
+    def new_ax(self, *args, **kwargs):
         """Add a single subplot."""
-        self.ax = self.fig.add_subplot(1, 1, 1)
+        if len(args) > 0 or len(kwargs) > 0:
+            self.ax = self.fig.add_subplot(*args, **kwargs)
+        else:
+            self.ax = self.fig.add_subplot(1, 1, 1)
 
     def save_fig(self):
         """Save the figure to file according to settings."""
-        filename = self.name(self.fmt, self.ctr)
+        filename = self.name(self.fmt, self.ctr, utils.figure_dir)
         pyplot.savefig(filename)
         if self.log is not None:
             self.log("Figure {} saved".format(filename))
@@ -60,12 +68,12 @@ class FigureHandler(object):
         self.disp_fig()
         self.close_fig()
     
-    def set_box(self, left=1.0, right=0.0, bottom=1.0, up=0.0, grid=None, aspect=None):
+    def set_box(self, left=None, right=None, bottom=None, up=None, grid=None, aspect=None, axis=None):
         """Configure the view port."""
         
-        if left < right:
+        if left is not None and right is not None:
             self.ax.set_xlim(left, right)
-        if bottom < up:
+        if bottom is not None and up is not None:
             self.ax.set_ylim(bottom, up)
         
         if grid is not None:
@@ -73,3 +81,14 @@ class FigureHandler(object):
         
         if aspect is not None:
             self.ax.set_aspect(aspect)
+        
+        if axis is not None:
+            if axis:
+                self.ax.set_axis_on()
+            else:
+                self.ax.set_axis_off()
+    
+    def set_acc(self, tight=False):
+        """Set some accessories."""
+        if tight:
+            self.fig.tight_layout()

@@ -4,6 +4,8 @@ import sys
 
 from . import utils
 
+utils.ensure_dir(utils.log_dir)
+
 class LogHandler(object):
     """Class to handler logs."""
     
@@ -12,7 +14,7 @@ class LogHandler(object):
         name="Main",
         save=False, echo=True,
         msg="{asctime} {levelname:8} @{lineno:3}: {message}", level=logging.DEBUG,
-        fmt="Logs/Log-{date}{second}-{ctr:03}.log",
+        fmt="{dire}{debug}Log-{date}{second}-{ctr:03}.log",
         log=print,
     ):
         """Initialize a log handler."""
@@ -27,7 +29,7 @@ class LogHandler(object):
             self.log = log
         
         self.ctr = 0
-        self.name = utils.NameFunction
+        self.name = utils.name_function
     
     def __call__(self, *args, **kwargs):
         """Wrapper to `logger.info(...)` for shorthand."""
@@ -44,7 +46,7 @@ class LogHandler(object):
             self.logger.addHandler(self.con_hdl)
         
         if self.save:
-            filename = self.name(self.fmt, self.ctr)
+            filename = self.name(self.fmt, self.ctr, utils.log_dir)
             self.file_hdl = logging.FileHandler(filename)
             self.file_hdl.setFormatter(self.fmtr)
             self.logger.addHandler(self.file_hdl)

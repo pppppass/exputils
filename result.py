@@ -5,13 +5,15 @@ import numpy
 
 from . import utils
 
+utils.ensure_dir(utils.result_dir)
+
 class ResultHandler(object):
     """Class to handle results."""
     
     def __init__(
         self,
         size,
-        fmt="Results/Result-{date}{second}-{ctr:03}.pkl",
+        fmt="{dire}{debug}Result-{date}{second}-{ctr:03}.pkl",
         log=print,
     ):
         """Initialize a result handler."""
@@ -19,7 +21,7 @@ class ResultHandler(object):
         self.fmt = fmt
         self.log = log
         
-        self.name = utils.NameFunction
+        self.name = utils.name_function
         
         self.cont = [[] for i in range(size)]
         self.update()
@@ -27,9 +29,9 @@ class ResultHandler(object):
     def update(self, ind=None):
         """Update filenames."""
         if ind is None:
-            self.file = [self.name(self.fmt, i) for i in range(self.size)]
+            self.file = [self.name(self.fmt, i, utils.result_dir) for i in range(self.size)]
         else:
-            self.file[ind] = self.name(self.fmt, ind)
+            self.file[ind] = self.name(self.fmt, ind, utils.result_dir)
     
     def numpy(self, ind):
         """Convert some content into `numpy.ndarray`."""
@@ -53,3 +55,9 @@ def extract(filename):
     with open(filename, "rb") as file:
         obj = pickle.load(file)
     return obj
+
+def load(filename, func):
+    """Use a specific function to load some content."""
+    with open(filename, "rb") as file:
+        return func(file)
+    
