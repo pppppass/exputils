@@ -22,3 +22,10 @@ def ensure_dir(path):
 figure_dir = "Figures/"
 log_dir = "Logs/"
 result_dir = "Results/"
+
+jrnl_config = dict(
+    title="Journal",
+    name="Journal.log",
+    msg="{asctime} {levelname:8} @{lineno:3}: {message}",
+)
+jrnl = None

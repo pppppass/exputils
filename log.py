@@ -3,6 +3,7 @@ import logging
 import sys
 
 from . import utils
+from . import journal
 
 utils.ensure_dir(utils.log_dir)
 
@@ -56,6 +57,7 @@ class LogHandler(object):
         if self.log is not None:
             if self.save:
                 self.log("Log {} opened".format(filename))
+            journal.logger.info("OPEN: Log {}".format(filename))
             self.log("Logger started...")
         
         if info is not None:

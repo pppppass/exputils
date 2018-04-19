@@ -3,6 +3,7 @@ from matplotlib import pyplot
 import mpl_toolkits.mplot3d
 
 from . import utils
+from . import journal
 
 utils.ensure_dir(utils.figure_dir)
 
@@ -47,6 +48,7 @@ class FigureHandler(object):
         pyplot.savefig(filename)
         if self.log is not None:
             self.log("Figure {} saved".format(filename))
+        journal.logger.info("SAVE: Figure {}".format(filename))
         self.ctr += 1
 
     def disp_fig(self):

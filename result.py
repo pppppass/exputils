@@ -4,6 +4,7 @@ import pickle
 import numpy
 
 from . import utils
+from . import journal
 
 utils.ensure_dir(utils.result_dir)
 
@@ -41,14 +42,18 @@ class ResultHandler(object):
         """Save some content."""
         with open(self.file[ind], "wb") as file:
             pickle.dump(self.cont[ind], file)
+        filename = self.file[ind]
         if self.log is not None:
-            self.log("Result {} saved".format(self.file[ind]))
+            self.log("Result {} saved".format(filename))
+        journal.logger.info("SAVE: Result {}".format(filename))
 
     def export(self, func, ind):
         """Use a specific function to export some content."""
-        func(self.file[ind])
+        filename = self.file[ind]
+        func(filename)
         if self.log is not None:
-            self.log("Result {} saved".format(self.file[ind]))
+            self.log("Result {} saved".format(filename))
+        journal.logger.info("SAVE: Result {}".format(filename))
 
 def extract(filename):
     """Extract an object directly from .pkl file."""
