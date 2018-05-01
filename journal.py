@@ -1,7 +1,7 @@
 """Global journal utilities. Use the `logger` to log into journal."""
 import logging
 
-from exputils import utils
+from . import utils
 
 if utils.jrnl is None:
     
@@ -13,5 +13,8 @@ if utils.jrnl is None:
     logger.setLevel(logging.DEBUG)
 
     logger.info("START: Journal {}".format(utils.jrnl_config["name"]))
+    
+    if utils.title is not None:
+        logger.info("TITLE: {}".format(utils.title))
 
     utils.jrnl = logger.info

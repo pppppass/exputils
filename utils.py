@@ -29,3 +29,5 @@ jrnl_config = dict(
     msg="{asctime} {levelname:8} @{lineno:3}: {message}",
 )
 jrnl = None
+
+title = None

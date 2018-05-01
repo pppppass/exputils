@@ -36,7 +36,7 @@ class LogHandler(object):
         """Wrapper to `logger.info(...)` for shorthand."""
         self.logger.info(*args, **kwargs)
     
-    def new_logger(self, info="### Remember to leave description message here ###"):
+    def new_logger(self, title=None):
         """Initialize a logger."""
         
         self.logger = logging.getLogger(self.title)
@@ -59,9 +59,11 @@ class LogHandler(object):
                 self.log("Log {} opened".format(filename))
             journal.logger.info("OPEN: Log {}".format(filename))
             self.log("Logger started...")
-        
-        if info is not None:
-            self.log(info)
+
+            if title is not None:
+                self.log(title)
+            elif utils.title is not None:
+                self.log(utils.title)
         
     def close_logger(self):
         """Terminate logging and remove formatters."""
