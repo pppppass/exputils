@@ -3,8 +3,8 @@ import pickle
 
 import numpy
 
-from . import utils
-from . import journal
+from exputils import utils
+from exputils import journal
 
 utils.ensure_dir(utils.result_dir)
 
@@ -24,32 +24,36 @@ class ResultHandler(object):
         
         self.name = utils.name_function
         
-        self.cont = [[] for i in range(size)]
+        self.content = [[] for i in range(size)]
         self.update()
     
-    def update(self, ind=None):
+    def update(self, index=None):
         """Update filenames."""
-        if ind is None:
+        if index is None:
             self.file = [self.name(self.fmt, i, utils.result_dir) for i in range(self.size)]
         else:
-            self.file[ind] = self.name(self.fmt, ind, utils.result_dir)
+            self.file[index] = self.name(self.fmt, index, utils.result_dir)
     
-    def numpy(self, ind):
+    def push(self, index, obj):
+        """Push an object into the object list."""
+        self.content[index].append(obj)
+    
+    def numpy(self, index):
         """Convert some content into `numpy.ndarray`."""
-        self.cont[ind] = numpy.array(self.cont[ind])
+        self.content[index] = numpy.array(self.content[index])
     
-    def save(self, ind):
+    def save(self, index):
         """Save some content."""
-        with open(self.file[ind], "wb") as file:
-            pickle.dump(self.cont[ind], file)
-        filename = self.file[ind]
+        with open(self.file[index], "wb") as file:
+            pickle.dump(self.content[index], file)
+        filename = self.file[index]
         if self.log is not None:
             self.log("Result {} saved".format(filename))
         journal.logger.info("SAVE: Result {}".format(filename))
 
-    def export(self, func, ind):
+    def export(self, func, index):
         """Use a specific function to export some content."""
-        filename = self.file[ind]
+        filename = self.file[index]
         func(filename)
         if self.log is not None:
             self.log("Result {} saved".format(filename))
@@ -65,4 +69,3 @@ def load(filename, func):
     """Use a specific function to load some content."""
     with open(filename, "rb") as file:
         return func(file)
-    

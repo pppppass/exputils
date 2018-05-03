@@ -2,8 +2,8 @@
 from matplotlib import pyplot
 import mpl_toolkits.mplot3d
 
-from . import utils
-from . import journal
+from exputils import utils
+from exputils import journal
 
 utils.ensure_dir(utils.figure_dir)
 
@@ -70,7 +70,7 @@ class FigureHandler(object):
         self.disp_fig()
         self.close_fig()
     
-    def set_box(self, left=None, right=None, bottom=None, up=None, grid=None, aspect=None, axis=None):
+    def set_box(self, left=None, right=None, bottom=None, up=None, grid=None, aspect=None, axis=None, title=None):
         """Configure the view port."""
         
         if left is not None and right is not None:
@@ -89,8 +89,14 @@ class FigureHandler(object):
                 self.ax.set_axis_on()
             else:
                 self.ax.set_axis_off()
+
+        if title is not None:
+            self.ax.set_title(title)
     
-    def set_acc(self, tight=False):
+    def set_accs(self, title=None, tight=None):
         """Set some accessories."""
-        if tight:
-            self.fig.tight_layout()
+        if tight is not None:
+            if tight:
+                self.fig.tight_layout()
+        if title is not None:
+            self.fig.suptitle(title)
