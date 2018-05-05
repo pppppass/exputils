@@ -48,24 +48,30 @@ class ResultHandler(object):
             pickle.dump(self.content[index], file)
         filename = self.file[index]
         if self.log is not None:
-            self.log("Result {} saved".format(filename))
-        journal.logger.info("SAVE: Result {}".format(filename))
+            self.log("Result {} saved by save".format(filename))
+        journal.logger.info("SAVE: save: Result {}".format(filename))
 
     def export(self, func, index):
         """Use a specific function to export some content."""
         filename = self.file[index]
         func(filename)
         if self.log is not None:
-            self.log("Result {} saved".format(filename))
-        journal.logger.info("SAVE: Result {}".format(filename))
+            self.log("Result {} saved by export".format(filename))
+        journal.logger.info("SAVE: export: Result {}".format(filename))
 
-def extract(filename):
+def extract(filename, log=print):
     """Extract an object directly from .pkl file."""
+    if log is not None:
+        log("Result {} loaded by extract".format(filename))
+    journal.logger.info("LOAD: extract: Result {}".format(filename))
     with open(filename, "rb") as file:
         obj = pickle.load(file)
     return obj
 
-def load(filename, func):
+def load(filename, func, log=print):
     """Use a specific function to load some content."""
+    if log is not None:
+        log("Result {} loaded by load".format(filename))
+    journal.logger.info("LOAD: load: Result {}".format(filename))
     with open(filename, "rb") as file:
         return func(file)
